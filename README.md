@@ -2,7 +2,7 @@
 
 
 git add .
-git commit -m "Initial setup"
+git commit -m "message"
 git push origin
 
 
