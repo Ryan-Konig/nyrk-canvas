@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8">
+
+	<!-- JQuery, via the Google CDN -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<style>
+
+    #canvas-container {
+        width: 500px;
+        margin: 0 auto;
+    }
+
+    canvas {
+        border: 1px solid black;
+    }
+
+</style>
+
+</head>
+
+<body>
+
+
+<div id="canvas-container">
+
+    <h2>Working with HTML5 Canvas element</h2>
+
+    <canvas id="ny1" width="500" height="400"></canvas>
+
+</div>
+
+
+
+<script type="text/javascript">
+
+var canvas = document.getElementById("ny1");
+var ctx = canvas.getContext("2d");
+
+function draw() {
+    
+    ctx.fillStyle = "rgb(200 0 0)";
+    ctx.fillRect(10, 10, 50, 50);
+
+    ctx.fillStyle = "rgb(0 0 200 / 50%)";
+    ctx.fillRect(30, 30, 50, 50);
+}
+
+$(document).ready(function() {
+    draw();
+});
+
+</script>
+
+
+
+
+
+</body>
+</html>
