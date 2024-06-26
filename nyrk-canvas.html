@@ -40,17 +40,29 @@
 var canvas = document.getElementById("ny1");
 var ctx = canvas.getContext("2d");
 
-function draw() {
-    
+function drawSquare() {
     ctx.fillStyle = "rgb(200 0 0)";
     ctx.fillRect(10, 10, 50, 50);
+}
 
-    ctx.fillStyle = "rgb(0 0 200 / 50%)";
-    ctx.fillRect(30, 30, 50, 50);
+function drawTriangle() {
+    ctx.beginPath();
+    ctx.moveTo(75, 50);
+    ctx.lineTo(100, 75);
+    ctx.lineTo(100, 25);
+    ctx.fill();
+}
+
+function drawCircle() {
+    ctx.beginPath();
+    ctx.arc(175, 175, 50, 0, Math.PI * 2, true);    
+    ctx.stroke();
 }
 
 $(document).ready(function() {
-    draw();
+    drawSquare();
+    drawTriangle();
+    drawCircle();
 });
 
 </script>
