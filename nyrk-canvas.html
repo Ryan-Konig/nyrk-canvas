@@ -9,13 +9,21 @@
 
 <style>
 
-    #canvas-container {
-        width: 500px;
-        margin: 0 auto;
+    body {
+        margin: 40px;
     }
 
     canvas {
         border: 1px solid black;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 10px;
+        margin: 20px 20px 0 0;
+        border: solid 1px gray;
+        border-radius: 25px;
+        cursor: pointer;
     }
 
 </style>
@@ -25,45 +33,122 @@
 <body>
 
 
-<div id="canvas-container">
+<div id="visualization-container">
 
     <h2>Working with HTML5 Canvas element</h2>
 
-    <canvas id="ny1" width="500" height="400"></canvas>
+    <p>Click on any of the buttons below and it will call a function and draw a shape, clear the canvas, or animate.</p>
+
+    <div id="canvas-container">
+        <canvas id="ny1" width="700" height="400"></canvas>
+    </div>
+
+    <div id="button-container">
+        <span class="button" id="button1" onclick="drawSquare()">Square</span>
+        <span class="button" id="button2" onclick="drawTriangle()">Triangle</span>
+        <span class="button" id="button3" onclick="drawCircle()">Circle</span>
+        <span class="button" id="button4" onclick="clearCanvas()">Clear canvas</span>
+        <span class="button" id="button5" onclick="animator()">Animate</span>
+    </div>
 
 </div>
 
 
-
 <script type="text/javascript">
 
+
 var canvas = document.getElementById("ny1");
-var ctx = canvas.getContext("2d");
+var context = canvas.getContext("2d");
+
+
+function clearCanvas() {
+    context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 
 function drawSquare() {
-    ctx.fillStyle = "rgb(200 0 0)";
-    ctx.fillRect(10, 10, 50, 50);
+    context.fillStyle = "rgb(200 0 0)";
+    context.fillRect(10, 10, 50, 50);
 }
+
 
 function drawTriangle() {
-    ctx.beginPath();
-    ctx.moveTo(75, 50);
-    ctx.lineTo(100, 75);
-    ctx.lineTo(100, 25);
-    ctx.fill();
+    context.beginPath();
+    context.moveTo(75, 50);
+    context.lineTo(100, 75);
+    context.lineTo(100, 25);
+    context.fill();
 }
+
 
 function drawCircle() {
-    ctx.beginPath();
-    ctx.arc(175, 175, 50, 0, Math.PI * 2, true);    
-    ctx.stroke();
+    context.beginPath();
+    context.arc(175, 175, 50, 0, Math.PI * 2, true);    
+    context.stroke();
 }
 
+
+function animator() {
+    window.requestAnimFrame = (function(callback) {
+       return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+          window.setTimeout(callback, 1000);
+       };
+    })();
+
+    function drawShapes(square, context) {
+       context.beginPath();
+       context.rect(square.x, square.y, square.width, square.height);
+       context.fillStyle = 'blue';
+       context.fill();
+       context.lineWidth = square.borderWidth;
+       context.strokeStyle = 'black';
+       context.stroke();
+       context.closePath();
+    }
+
+
+    // Just FYI, 'animate' is a reserved word. If a function is named after a reserved word, it won't work when called in certain situations.
+
+    function animation(square, canvas, context, startTime) {
+       // updating the time and speed of movement parameters
+       var time = (new Date()).getTime() - startTime;
+       var speed = 100;
+       var X = speed * time / 300;
+       if (X < canvas.width - square.width - square.borderWidth / 2) {
+          square.x = X;
+       } else { return }
+       // clearing the Canvas element space
+       context.clearRect(0, 0, canvas.width, canvas.height);
+       drawShapes(square, context);
+       // requesting new frame for animation
+       requestAnimFrame(function() {
+          animation(square, canvas, context, startTime);
+       }, console.log("hit"));
+    }
+
+    //var canvas = document.getElementById('canvas');
+    //var context = canvas.getContext('2d');
+
+    var square = {
+       x: 0,
+       y: 75,
+       width: 100,
+       height: 100,
+       borderWidth: 0
+    };
+    drawShapes(square, context);
+    // buffer time before starting animation
+    setTimeout(function() {
+       var startTime = (new Date()).getTime();
+       animation(square, canvas, context, startTime);
+    }, 200);
+}
+
+
 $(document).ready(function() {
-    drawSquare();
-    drawTriangle();
-    drawCircle();
+    console.log("ready");
 });
+
 
 </script>
 
